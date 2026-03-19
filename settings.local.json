@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la ~/.claude*)",
+      "Bash(find /Users/Arya/.claude -name MEMORY* -o -name *memory* -type f)",
+      "Bash(du -sh /Users/Arya/.claude/*)"
+    ]
+  }
+}

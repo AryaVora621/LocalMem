@@ -1,0 +1,20 @@
+# Runtime / session data — never sync these
+/plugins/
+/projects/
+/file-history/
+/cache/
+/backups/
+/sessions/
+/telemetry/
+/chrome/
+/shell-snapshots/
+/paste-cache/
+/downloads/
+activity.log
+history.jsonl
+mcp-needs-auth-cache.json
+todo.md
+
+# Personal identifiers — keep off public repo
+commands/ftc.md
+memory/project_ftc_agent.md
