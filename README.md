@@ -32,14 +32,35 @@ After running, start a new Claude Code session — config loads automatically.
 
 ## Keeping in sync
 
-Changes made anywhere (in-session or direct edits) are reflected immediately since both sides point to the same files. To push updates:
+Changes are live immediately (symlinks). To sync with the remote:
 
 ```bash
-cd ~/claude-config
-git add -A
-git commit -m "Update config"
-git push
+bash ~/claude-config/sync.sh
 ```
+
+`sync.sh` handles all three cases automatically:
+
+| State | Action |
+|-------|--------|
+| Local ahead of remote | Pushes |
+| Remote ahead of local | Fast-forward merge |
+| Diverged (both have changes) | Creates a `config/sync-<timestamp>` branch, prints an AI reasoning prompt, suggests `/sc:sync-config` |
+
+### Resolving diverged state
+
+When `sync.sh` detects divergence it prints a structured prompt. Run `/sc:sync-config` in Claude Code to execute a 5-phase reasoning chain:
+
+1. **Snapshot** — commit any pending local changes
+2. **Fetch & assess** — determine ahead/behind counts
+3. **Inventory** — list every file changed on each side
+4. **Classify & reason** — apply per-file rules (local identity files, agent defs, commands union, memory merge, infra prefers remote); write reasoning before each verdict
+5. **Execute** — apply resolutions, commit, push
+
+The classification rules ensure:
+- `settings.local.json` is **never** overwritten by remote
+- `memory/MEMORY.md` entries are **always** unioned (nothing dropped)
+- `commands/sc/` files from both sides are **always** kept
+- Agent definitions keep the **richer** version
 
 ## What's NOT tracked
 
